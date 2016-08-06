@@ -107,10 +107,19 @@ class SpaceAPI_WP {
 			),
 			'space' => array(
 				'name' => 'space',
-				'label' => 'Name of Hacker Space',
+				'label' => 'Name of HackSpace',
 				'function' => 'settings_space'
 			),
-			
+			'logo' => array(
+				'name' => 'logo',
+				'label' => 'Image for the HackSpace',
+				'function' => 'settings_logo'
+			),
+			'url' => array(
+				'name' => 'url',
+				'label' => 'Web Address for the HackSpace',
+				'function' => 'settings_url'
+			),
 		);
 
 		$this->load_dependencies();

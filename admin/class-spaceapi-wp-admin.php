@@ -174,24 +174,30 @@ class SpaceAPI_WP_Admin {
 	}
 
 	/**
+	 * Using this magic methods to use an array with all the options
+	 * 
+	 * @since    0.1
+	 * @param    string    $name         Name of the method
+	 * @param    mixed     $arguments    Params for the method
+	 */
+	public function __call($name, $arguments) {
+		foreach ( $this->settings_section_options as $key => $option) {
+			if ( 'settings_'.$option['name'] == $name ) {
+				$name = $this->get_option_name( $key );
+				$option = $this->get_option($key);
+				echo "<input type='text' name='$name' value='$option' />";
+			}
+		}
+	}
+
+	/**
 	 * Settings Option SpaceAPI Version callback
 	 * 
 	 * @since     0.1
 	 */
 	public function settings_api() {
 		$name = $this->get_option_name( 'api' );
-		$option = $this->get_option('space');
-		echo "<input type='text' name='$name' value='$option' />";
-	}
-
-	/**
-	 * Settings Option Name callback
-	 * 
-	 * @since     0.1
-	 */
-	public function settings_space() {
-		$name = $this->get_option_name( 'space' );
-		$option = $this->get_option('space');
+		$option = $this->get_option('api');
 		echo "<input type='text' name='$name' value='$option' />";
 	}
 

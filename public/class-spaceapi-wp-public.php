@@ -157,10 +157,13 @@ class SpaceAPI_WP_Public {
 			exit;
 		}
 		if ( 'v1' == $spaceapi_version ) {
+			
 			if ( !isset( $spaceapi_parts[1] ) ) {
 				$spaceapi_parts[1] = 'index';
 			}
+			
 			$spaceapi_action = $spaceapi_parts[1];
+			
 			$result = array();
 			switch ($spaceapi_action) {
 				case 'index':
@@ -168,6 +171,7 @@ class SpaceAPI_WP_Public {
 						$result[$option['name']] = $this->get_option($key);
 					}
 					break;
+				/*
 				case 'version':
 					$o = $this->settings_section.'-spaceapi-version';
 					$result['api'] = esc_attr( get_option( $o ) );
@@ -179,18 +183,20 @@ class SpaceAPI_WP_Public {
 					$result['space'] = esc_attr( get_option( $o ) );
 
 					break;
+				*/
 				default:
 					wp_redirect( home_url( '/' ) );
 					exit;
 					break;
 			}
+			
 			wp_send_json( $result );
-			// Need to send Header Content-type: application/json
-			// and remove this die
-			// die;
+			
 		} else {
+			
 			wp_redirect( home_url( '/' ) );
 			exit;
+			
 		}
 	}
 
