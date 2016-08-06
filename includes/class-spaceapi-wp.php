@@ -135,6 +135,11 @@ class SpaceAPI_WP {
 				'label' => 'Longitude for the HackSpace',
 				'function' => 'settings_lon'
 			),
+			'issue_report_channels' => array(
+				'name' => 'issue_report_channels',
+				'label' => 'List of channels to report issues, comma separated',
+				'function' => 'settings_issue_report_channels'
+			),
 		);
 
 		$this->load_dependencies();

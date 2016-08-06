@@ -176,7 +176,9 @@ class SpaceAPI_WP_Public {
 					foreach ( $this->settings_section_options as $key => $option ) {
 						if ( in_array( $option['name'], $location ) ) {
 							$result['location'][$option['name']] = $this->get_option($key);
-						} else {
+						} elseif ( 'issue_report_channels' == $key ) {
+							$result['issue_report_channels'] = explode( ',', $this->get_option($key) );
+						}else {
 							$result[$option['name']] = $this->get_option($key);
 						}
 					}
