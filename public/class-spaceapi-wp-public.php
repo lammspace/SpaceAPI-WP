@@ -100,7 +100,8 @@ class SpaceAPI_WP_Public {
 	private function get_option($option) {
 		if ( isset( $this->settings_section_options[$option] ) ) {
 			$name = $this->settings_section.'-'.$this->settings_section_options[$option]['name'];
-			return esc_attr( get_option( $name ) );
+			//return esc_attr( get_option( $name ) );
+			return get_option( $name );
 		} else {
 			return '';
 		}
@@ -167,8 +168,17 @@ class SpaceAPI_WP_Public {
 			$result = array();
 			switch ($spaceapi_action) {
 				case 'index':
+					$location = array(
+						'address',
+						'lat',
+						'lon'
+					);
 					foreach ( $this->settings_section_options as $key => $option ) {
-						$result[$option['name']] = $this->get_option($key);
+						if ( in_array( $option['name'], $location ) ) {
+							$result['location'][$option['name']] = $this->get_option($key);
+						} else {
+							$result[$option['name']] = $this->get_option($key);
+						}
 					}
 					break;
 				/*

@@ -191,17 +191,6 @@ class SpaceAPI_WP_Admin {
 	}
 
 	/**
-	 * Settings Option SpaceAPI Version callback
-	 * 
-	 * @since     0.1
-	 */
-	public function settings_api() {
-		$name = $this->get_option_name( 'api' );
-		$option = $this->get_option('api');
-		echo "<input type='text' name='$name' value='$option' />";
-	}
-
-	/**
 	 * Menu rendering method
 	 * 
 	 * @since     0.1

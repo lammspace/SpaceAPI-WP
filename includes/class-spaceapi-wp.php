@@ -120,6 +120,21 @@ class SpaceAPI_WP {
 				'label' => 'Web Address for the HackSpace',
 				'function' => 'settings_url'
 			),
+			'address' => array(
+				'name' => 'address',
+				'label' => 'Address for the HackSpace',
+				'function' => 'settings_address'
+			),
+			'lat' => array(
+				'name' => 'lat',
+				'label' => 'Latitude for the HackSpace',
+				'function' => 'settings_lat'
+			),
+			'lon' => array(
+				'name' => 'lon',
+				'label' => 'Longitude for the HackSpace',
+				'function' => 'settings_lon'
+			),
 		);
 
 		$this->load_dependencies();
