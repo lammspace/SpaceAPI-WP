@@ -137,7 +137,7 @@ class SpaceAPI_WP_Public {
 	/**
 	 * Serve the SpaceAPI JSON
 	 * 
-	 * @since    0.1
+	 * @since    0.2
 	 */
 	public function parse_request($wp) {
 		$spaceapi = get_query_var( 'spaceapi', null );

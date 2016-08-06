@@ -20,7 +20,7 @@
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
  * @link https://github.com/gcarreno/spaceapi-wp
- * @since      0.1
+ * @since      0.2
  *
  * @package    SpaceAPI_WP
  */

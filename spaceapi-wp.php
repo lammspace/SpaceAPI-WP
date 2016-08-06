@@ -7,13 +7,13 @@
  * @license MIT
  * @link https://github.com/gcarreno/spaceapi-wp
  * @copyright 2016 Gustavo Carreno
- * @since 0.1
+ * @since 0.2
  * 
  * @wordpress-plugin
  * Plugin Name: SpaceAPI for WordPress
  * Plugin URI: https://github.com/gcarreno/spaceapi-wp
  * Description: A WordPress plugin to manage a hackerspace's <a href="http://spaceapi.net/">SpaceAPI</a> data
- * Version: 0.1
+ * Version: 0.2
  * Author: Gustavo Carreno
  * Author URI: https://guscarreno.blogspot.co.uk
  * License: MIT
