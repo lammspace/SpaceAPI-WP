@@ -122,37 +122,35 @@ class SpaceAPI_WP_Public {
 				$spaceapi_parts[1] = 'index';
 			}
 			$spaceapi_action = $spaceapi_parts[1];
+			$result = array();
 			switch ($spaceapi_action) {
 				case 'index':
-					$result = array();
 					$o = $this->settings_section.'-spaceapi-version';
 					$result['api'] = esc_attr( get_option( $o ) );
 					$o = $this->settings_section.'-name';
 					$result['space'] = esc_attr( get_option( $o ) );
 					
-					echo json_encode( $result );
-					die;
 					break;
 				case 'version':
-					$result = array();
 					$o = $this->settings_section.'-spaceapi-version';
 					$result['api'] = esc_attr( get_option( $o ) );
 
-					echo json_encode( $result );
-					die;
 					break;
 				case 'name':
 					$result = array();
 					$o = $this->settings_section.'-name';
 					$result['space'] = esc_attr( get_option( $o ) );
 
-					echo json_encode( $result );
-					die;
 					break;
 				default:
 					wp_redirect( home_url( '/' ) );
+					exit;
 					break;
 			}
+			echo json_encode( $result );
+			// Need to send Header Content-type: application/json
+			// and remove this die
+			die;
 		} else {
 			wp_redirect( home_url( '/' ) );
 			exit;
