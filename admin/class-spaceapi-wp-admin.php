@@ -60,18 +60,57 @@ class SpaceAPI_WP_Admin {
 	private $settings_section;
 
 	/**
+	 * The Settings Section array of options.
+	 *
+	 * @since    0.1
+	 * @access   private
+	 * @var      string    $settings_section The Settings Section array of options.
+	 */
+	private $settings_section_options;
+	
+	/**
+	 * Gets the WP Option name
+	 * 
+	 * @since    0.1
+	 * @param    string    $option    The name of the option
+	 */
+	private function get_option_name($option) {
+		if ( isset( $this->settings_section_options[$option] ) ) {
+			return $this->settings_section.'-'.$this->settings_section_options[$option]['name'];
+		} else {
+			return '';
+		}
+	}
+
+	/**
+	 * Gets the WP Option value
+	 * 
+	 * @since    0.1
+	 * @param    string    $option    The name of the option
+	 */
+	private function get_option($option) {
+		if ( isset( $this->settings_section_options[$option] ) ) {
+			$name = $this->settings_section.'-'.$this->settings_section_options[$option]['name'];
+			return esc_attr( get_option( $name ) );
+		} else {
+			return '';
+		}
+	}
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.1
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version           The version of this plugin.
+	 * @param    string    $plugin_name       The name of this plugin.
+	 * @param    string    $version           The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name, $version, $settings_page, $settings_section, $settings_section_options ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		$this->settings_page = $this->plugin_name.'-settings';
-		$this->settings_section = $this->settings_page.'-section';
+		$this->settings_page = $settings_page;
+		$this->settings_section = $settings_section;
+		$this->settings_section_options = $settings_section_options;
 		
 	}
 
@@ -88,38 +127,22 @@ class SpaceAPI_WP_Admin {
 			array($this, 'settings_section'),
 			$this->settings_page
 		);
-		// Add the settings needed
-		// Space API version
-		add_settings_field(
-			$this->settings_section.'-spaceapi-version',
-			'SpaceAPI Version',
-			array($this, 'settings_spaceapi_version'),
-			$this->settings_page,
-			$this->settings_section,
-			array(
-				'label_for'=>$this->settings_section.'-spaceapi-version'
-			)
-		);
-		register_setting(
-			$this->settings_section,
-			$this->settings_section.'-spaceapi-version'
-		);
-		
-		// Hacker Space Name
-		add_settings_field(
-			$this->settings_section.'-name',
-			'Name of the Space',
-			array($this, 'settings_name'),
-			$this->settings_page,
-			$this->settings_section,
-			array(
-				'label_for'=>$this->settings_section.'-name'
-			)
-		);
-		register_setting(
-			$this->settings_section,
-			$this->settings_section.'-name'
-		);
+		foreach ( $this->settings_section_options as $key => $option) {
+			add_settings_field(
+				$this->get_option_name($key),
+				$option['label'],
+				array($this, $option['function']),
+				$this->settings_page,
+				$this->settings_section,
+				array(
+					'label_for'=>$this->get_option_name($key)
+				)
+			);
+			register_setting(
+				$this->settings_section,
+				$this->get_option_name($key)
+			);
+		}
 	}
 
 
@@ -155,10 +178,10 @@ class SpaceAPI_WP_Admin {
 	 * 
 	 * @since     0.1
 	 */
-	public function settings_spaceapi_version() {
-		$name = $this->settings_section.'-spaceapi-version';
-		$setting = esc_attr( get_option( $name ) );
-		echo "<input type='text' name='$name' value='$setting' />";
+	public function settings_api() {
+		$name = $this->get_option_name( 'api' );
+		$option = $this->get_option('space');
+		echo "<input type='text' name='$name' value='$option' />";
 	}
 
 	/**
@@ -166,10 +189,10 @@ class SpaceAPI_WP_Admin {
 	 * 
 	 * @since     0.1
 	 */
-	public function settings_name() {
-		$name = $this->settings_section.'-name';
-		$setting = esc_attr( get_option( $name ) );
-		echo "<input type='text' name='$name' value='$setting' />";
+	public function settings_space() {
+		$name = $this->get_option_name( 'space' );
+		$option = $this->get_option('space');
+		echo "<input type='text' name='$name' value='$option' />";
 	}
 
 	/**

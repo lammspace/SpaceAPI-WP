@@ -60,6 +60,15 @@ class SpaceAPI_WP_Public {
 	private $settings_section;
 
 	/**
+	 * The Settings Section array of options.
+	 *
+	 * @since    0.1
+	 * @access   private
+	 * @var      string    $settings_section The Settings Section array of options.
+	 */
+	private $settings_section_options;
+
+	/**
 	 * The namespace of this plugin for the rest api.
 	 *
 	 * @since    0.1
@@ -69,18 +78,48 @@ class SpaceAPI_WP_Public {
 	private $rest_namespace;
 
 	/**
+	 * Gets the WP Option name
+	 * 
+	 * @since    0.1
+	 * @param    string    $option    The name of the option
+	 */
+	private function get_option_name($option) {
+		if ( isset( $this->settings_section_options[$option] ) ) {
+			return $this->settings_section.'-'.$this->settings_section_options[$option]['name'];
+		} else {
+			return '';
+		}
+	}
+
+	/**
+	 * Gets the WP Option value
+	 * 
+	 * @since    0.1
+	 * @param    string    $option    The name of the option
+	 */
+	private function get_option($option) {
+		if ( isset( $this->settings_section_options[$option] ) ) {
+			$name = $this->settings_section.'-'.$this->settings_section_options[$option]['name'];
+			return esc_attr( get_option( $name ) );
+		} else {
+			return '';
+		}
+	}
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.1
 	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name, $version, $settings_page, $settings_section, $settings_section_options ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		$this->settings_page = $this->plugin_name.'-settings';
-		$this->settings_section = $this->settings_page.'-section';
+		$this->settings_page = $settings_page;
+		$this->settings_section = $settings_section;
+		$this->settings_section_options = $settings_section_options;
 		$this->rest_namespace = 'spaceapi/v1';
 
 	}
@@ -125,11 +164,9 @@ class SpaceAPI_WP_Public {
 			$result = array();
 			switch ($spaceapi_action) {
 				case 'index':
-					$o = $this->settings_section.'-spaceapi-version';
-					$result['api'] = esc_attr( get_option( $o ) );
-					$o = $this->settings_section.'-name';
-					$result['space'] = esc_attr( get_option( $o ) );
-					
+					foreach ( $this->settings_section_options as $key => $option ) {
+						$result[$option['name']] = $this->get_option($key);
+					}
 					break;
 				case 'version':
 					$o = $this->settings_section.'-spaceapi-version';
@@ -147,10 +184,10 @@ class SpaceAPI_WP_Public {
 					exit;
 					break;
 			}
-			echo json_encode( $result );
+			wp_send_json( $result );
 			// Need to send Header Content-type: application/json
 			// and remove this die
-			die;
+			// die;
 		} else {
 			wp_redirect( home_url( '/' ) );
 			exit;

@@ -56,6 +56,33 @@ class SpaceAPI_WP {
 	 * @var      string    $version    The current version of the plugin.
 	 */
 	protected $version;
+	/**
+	 * The Settings Page ID.
+	 *
+	 * @since    0.1
+	 * @access   private
+	 * @var      string    $settings_page The Settings Page ID.
+	 */
+
+	private $settings_page;
+
+	/**
+	 * The Settings Section ID.
+	 *
+	 * @since    0.1
+	 * @access   private
+	 * @var      string    $settings_section The Settings Section ID.
+	 */
+	private $settings_section;
+
+	/**
+	 * The Settings Section array of options.
+	 *
+	 * @since    0.1
+	 * @access   private
+	 * @var      string    $settings_section The Settings Section array of options.
+	 */
+	private $settings_section_options;
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -70,6 +97,21 @@ class SpaceAPI_WP {
 
 		$this->plugin_name = 'spaceapi-wp';
 		$this->version = '0.1';
+		$this->settings_page = $this->plugin_name.'-settings';
+		$this->settings_section = $this->settings_page.'-section';
+		$this->settings_section_options = array(
+			'api' => array(
+				'name' => 'api',
+				'label' => 'SpaceAPI Api Version',
+				'function' => 'settings_api'
+			),
+			'space' => array(
+				'name' => 'space',
+				'label' => 'Name of Hacker Space',
+				'function' => 'settings_space'
+			),
+			
+		);
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -149,7 +191,13 @@ class SpaceAPI_WP {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new SpaceAPI_WP_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new SpaceAPI_WP_Admin( 
+			$this->get_plugin_name(), 
+			$this->get_version(),
+			$this->settings_page,
+			$this->settings_section,
+			$this->settings_section_options 
+		);
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -167,7 +215,13 @@ class SpaceAPI_WP {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new SpaceAPI_WP_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new SpaceAPI_WP_Public( 
+			$this->get_plugin_name(), 
+			$this->get_version(),
+			$this->settings_page,
+			$this->settings_section,
+			$this->settings_section_options 
+		);
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
